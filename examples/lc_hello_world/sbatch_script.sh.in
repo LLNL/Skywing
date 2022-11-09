@@ -1,0 +1,12 @@
+#!/bin/bash
+#SBATCH -N 4
+#SBATCH -J skywing_LC_hello_world
+#SBATCH -t 00:05:00
+#SBATCH -p pbatch
+#SBATCH -o lc_hello_world_out.txt
+
+#### Shell commands
+python generate_config_info.py num_agents=8 node_list=$SLURM_NODELIST port_start=30000 config_filename=config.cfg
+echo "SLURM_NODELIST is $SLURM_NODELIST"
+echo " "
+srun -n8 ./call_executable.sh #"@lc_hello_exe@" config.cfg $SLURM_NODEID $SLURM_LOCALID 2 8

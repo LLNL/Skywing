@@ -1,0 +1,66 @@
+#!/bin/bash
+
+#This is a shell script which calls sync_jacobi
+
+if [[ $# < 1 ]]; then
+  echo "usage: source $(basename ${BASH_SOURCE[0]}) starting_port_number"
+  return
+fi
+
+STARTING_PORT=$1
+
+trap kill_progs EXIT
+kill_progs() {
+  for (( counter_for_network_elements=0 ;  counter_for_network_elements < size_of_network ; counter_for_network_elements++ ))
+  do
+      var="erase${counter_for_network_elements}"
+    kill -9 ${!var} > /dev/null 2> /dev/null
+  done
+}
+
+# For this example, the number of rows in the matrix corresponds to the size of the network.
+# size_of_network=4
+# matrix_name="toy.mtx"
+
+size_of_network=10
+matrix_name="randomInteger_10_diagDom_100.mtx"
+
+number_of_trials=1
+
+# This implementation allows for overlapping computations.
+ 
+starting_number_of_overlapping_rows=0;
+ending_number_of_overlapping_rows=1;
+
+# Directory where skyent agents load their information
+system_directory="../../../examples/async_jacobi/system"
+partition_directory="partition"
+rm -r ${partition_directory}
+mkdir ${partition_directory}
+
+# folder which stores results for aggregation.
+save_directory="data_hold"
+rm -r ${save_directory}
+mkdir ${save_directory}
+
+python3 ../../../examples/async_jacobi/jacobi_pre_processing.py ${starting_number_of_overlapping_rows} ${ending_number_of_overlapping_rows} ${size_of_network} ${matrix_name} ${system_directory} ${partition_directory}
+
+echo -e Asyn Jacobi: '\t'  matrix: ${matrix_name} '\t' Row Count: ${starting_number_of_overlapping_rows} to ${ending_number_of_overlapping_rows} '\t' number of trials each: ${number_of_trials}
+
+for (( row_counter=starting_number_of_overlapping_rows ; row_counter<=ending_number_of_overlapping_rows ; row_counter++ ))
+do
+  for (( counter_for_trials = 1 ; counter_for_trials <= number_of_trials ; counter_for_trials++ ))
+  do
+      echo Begin: Redundancy ${row_counter} Trial ${counter_for_trials}
+      echo --------------------------------------------
+      for (( counter_for_network_elements=0 ;  counter_for_network_elements < size_of_network ; counter_for_network_elements++ ))
+      do
+        "@async_jacobi_exe@" ${counter_for_network_elements} ${STARTING_PORT} ${size_of_network} ${matrix_name} ${row_counter} ${partition_directory} ${counter_for_trials} ${save_directory} &
+        declare "erase${counter_for_network_elements}=$!"
+      done
+      sleep 10
+      kill_progs
+      echo Complete: Redundancy ${row_counter} Trial ${counter_for_trials}
+      STARTING_PORT=$((STARTING_PORT+size_of_network+100))
+    done
+done

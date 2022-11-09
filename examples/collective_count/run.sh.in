@@ -1,0 +1,37 @@
+#!/bin/bash
+
+if [[ $# < 1 ]]; then
+  echo "usage: source $(basename ${BASH_SOURCE[0]}) starting_port_number"
+  return
+fi
+
+STARTING_PORT=$1
+
+trap kill_progs EXIT
+kill_progs() {
+  for (( counter_for_network_elements=0 ;  counter_for_network_elements < size_of_network ; counter_for_network_elements++ ))
+  do
+      var="erase${counter_for_network_elements}"
+    kill -9 ${!var} > /dev/null 2> /dev/null
+  done
+}
+
+# For this example, one can specify the size of the system as well as
+# the number of trials. Not recommended to set over 100 or port
+# collisions could occur between trials.
+size_of_network=4
+number_of_trials=1
+
+for (( counter_for_trials = 1 ; counter_for_trials <= $number_of_trials ; counter_for_trials++ )) 
+do
+  echo "Trial: " $counter_for_trials
+  for (( counter_for_network_elements=0 ;  counter_for_network_elements < size_of_network ; counter_for_network_elements++ ))
+  do
+    "@collective_count_exe@" ${counter_for_network_elements} ${STARTING_PORT} ${size_of_network} &
+    declare "erase${counter_for_network_elements}=$!"
+  done
+  sleep 10
+  kill_progs
+  echo Complete: Trial ${counter_for_trials}
+  STARTING_PORT=$((STARTING_PORT+100))
+done

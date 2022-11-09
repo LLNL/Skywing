@@ -1,0 +1,16 @@
+#!/bin/bash
+
+trap kill_progs EXIT
+kill_progs() {
+  for i in 0 1 2 3; do
+    var="erase${i}"
+    kill -9 ${!var} > /dev/null 2> /dev/null
+  done
+}
+
+for i in 0 1 2 3; do
+  "@hello_exe@" ${i} > /dev/null 2> /dev/null &
+  declare "erase${i}=$!"
+done
+
+"@hello_exe@" 4

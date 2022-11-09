@@ -1,0 +1,24 @@
+#!/bin/bash
+
+trap kill_progs EXIT
+kill_progs() {
+  for i in 1 2 3 4; do
+    var="erase${i}"
+    kill -9 ${!var} > /dev/null 2> /dev/null
+  done
+}
+
+# Horrible hack due to Meson not really supporting this
+cfg="$(dirname "@exe@")/config.cfg"
+
+for i in 1 2 3 4; do
+  "@exe@" "${cfg}" "machine${i}" &
+  declare "waitfor${i}=$!"
+done
+
+"@exe@" "${cfg}" machine5
+
+for i in 1 2 3 4; do
+  var="waitfor${i}"
+  wait ${!var}
+done

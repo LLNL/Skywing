@@ -1,0 +1,3 @@
+#!/bin/bash
+
+"@lc_hello_exe@" config.cfg $SLURM_NODEID $SLURM_LOCALID 2 8

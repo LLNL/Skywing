@@ -1,0 +1,35 @@
+#!/bin/bash
+
+if [[ $# < 2 ]]; then
+  echo "usage: @exe@ number_of_agents starting_port_number"
+  exit 1
+fi
+
+NUM_AGENTS=$1
+STARTING_PORT=$2
+
+for (( i=0; i < ${NUM_AGENTS}; i++ )); do
+  LOCAL_PORT[$i]=$((STARTING_PORT + i*1000))
+  ALL_PORTS="$ALL_PORTS ${LOCAL_PORT[$i]}"
+done
+
+trap kill_progs SIGINT
+kill_progs() {
+  for (( i=0; i < "${#ARGS[@]}"; i++ )); do
+    var="erase${i}"
+    kill -9 ${!var} > /dev/null 2> /dev/null
+  done
+  kill -9 $HELICS_PID
+}
+
+"@helics_broker@" -f$NUM_AGENTS &
+HELICS_PID=$!
+
+for (( i=0; i < ${NUM_AGENTS}-1; i++ )); do
+  echo "@exe@" "agent${i}" ${LOCAL_PORT[$i]} $ALL_PORTS
+  "@exe@" "agent${i}" ${LOCAL_PORT[$i]} $ALL_PORTS > /dev/null 2> /dev/null &
+  declare "erase${i}=$!"
+done
+
+echo "@exe@" "agent$NUM_AGENTS" ${LOCAL_PORT[$i]} $ALL_PORTS
+"@exe@" "agent$NUM_AGENTS" ${LOCAL_PORT[-1]} $ALL_PORTS

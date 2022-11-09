@@ -1,0 +1,19 @@
+# option('use_ns3', type: 'boolean', value: false, description: 'Build the various bits that depend on ns3')
+option(
+  'logging_level',
+  type: 'combo',
+  description: 'Logging level to enable.',
+  choices: [
+    'off',
+    'critical',
+    'error',
+    'warn',
+    'info',
+    'debug',
+    'trace'
+  ]
+)
+option('build_tests', type: 'boolean', value: false, description: 'Build tests')
+option('build_examples', type: 'boolean', value: false, description: 'Build the example programs')
+option('build_lc_examples', type: 'boolean', value: false, description: 'Build LC example programs')
+option('use_helics', type: 'boolean', value: false, description: 'Link the HELICS library')

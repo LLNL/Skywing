@@ -1,0 +1,35 @@
+#!/bin/bash
+
+base_loc=$(dirname $(realpath "$0"))
+script_dir=$(realpath ${base_loc}/../../scripts)
+formatter="${script_dir}/clang_build/bin/clang-format"
+
+if [ ! -f "${formatter}" ]; then
+  if ! command -v clang-format; then
+   echo "*** ERROR ***" 1>&2
+   echo "Could not find clang-format; please install it." 1>&2
+   echo "It can be found in many package managers." 1>&2
+   echo "Alternatively, it can be locally built from source by running:" 1>&2
+   echo ${script_dir}/build_clang_format.sh 1>&2
+   echo "*** ERROR ***" 1>&2
+   exit 1
+  fi
+  formatter=clang-format
+fi
+
+# Taken from example script; either compare against head or nothing
+if git rev-parse --verify HEAD >/dev/null 2>&1
+then
+  against=HEAD
+else
+  # Initial commit: diff against an empty tree object
+  against=$(git hash-object -t tree /dev/null)
+fi
+
+changed_files=$(git diff --name-only --diff-filter=AM ${against})
+
+for f in ${changed_files}; do
+  if [[ "$f" =~ .*\.(cpp|hpp) ]]; then
+    ${formatter} -i "$f"
+  fi
+done
