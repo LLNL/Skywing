@@ -5,35 +5,15 @@ services:
 ## Core Build
 ###########################
 
-  skywing: # Working 
-    container_name: skywing_base
+  Skywing: # Working 
+    container_name: skywing_env
     image: empyreanlattice/skywing
     build:
       context: ../../
       dockerfile: ./docker/Dockerfile.skywing
     network_mode: host
     restart: unless-stopped
+    stdin_open: true
     tty: true
-
-###########################
-## Tutorial Containers
-###########################
-
-  tutorial_introduction: # Not Working 
-    container_name: skywing_introduction
-    image: empyreanlattice/skywing:latest
-    network_mode: host
-    # command:
-
-  tutorial_pubsub: # Not Working 
-    container_name: skywing_pubsub
-    image: empyreanlattice/skywing:latest
-    network_mode: host
-    # command:
-
-  tutorial_itr_method: # Not Working 
-    container_name: skywing_itr_method
-    image: empyreanlattice/skywing:latest
-    network_mode: host
-    # command:
+    command: /bin/bash
 

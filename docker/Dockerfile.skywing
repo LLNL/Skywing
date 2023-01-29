@@ -54,3 +54,4 @@ COPY ./ /Libraries/Skywing
 RUN cd /Libraries/Skywing && meson build -Dbuild_tests=true -Dbuild_examples=true
 RUN cd /Libraries/Skywing/build && ninja
 
+CMD ["/bin/bash"]

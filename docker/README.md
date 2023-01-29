@@ -2,10 +2,23 @@
 
 ## Host Installation 
 
-#### Setup Scripts
-Prepare the host by running one of the following commands :
-- **General Usage** : [`./docker/init_host.sh`](https://github.com/mvancleaver/Skywing/blob/docker/docker/init_host.sh)
-- **GPU Enbabled** :[`./docker/init_host.sh -nvidia_driver`](https://github.com/mvancleaver/Skywing/blob/docker/docker/init_host.sh)
+Clone the source repo and it's dependancies : 
+    
+    git clone --recurse-submodules --branch docker https://github.com/mvancleaver/Skywing.git
+
+#### Setup
+##### Manual 
+- Install [Docker Engine], [Docker Compose], and any dependanceies as outlined in the Docs
+
+##### Automatic (Trust, but verify)
+Use the Installer Script : [`./docker/init_host.sh`](https://github.com/mvancleaver/Skywing/blob/docker/docker/init_host.sh)
+
+**General Usage** : 
+    
+    ./docker/init_host.sh
+
+
+- **GPU Enbabled** :[`./docker/init_host.sh -nvidia_driver`]
 
 
 ## Docker Usage
@@ -13,21 +26,18 @@ Prepare the host by running one of the following commands :
 #### Images
 - `Images` are built using the `Dockerfile` below :
 
-| Image Name                      | Dockerfile                  | Description           |
-|---                              |---                          |---                    |
-| **`empyreanlattice/skywing:latest`**   | [Dockerfile.skywing]        | Base Skywing Build    |
+| Image Name                                | Dockerfile                  | Description           |
+|---                                        |---                          |---                    |
+| **`empyreanlattice/skywing:latest`**      | [Dockerfile.skywing]        | Base Skywing Build    |
 
-[Dockerfile.skywing]:https://github.com/mvancleaver/Skywing/blob/docker/docker/Dockerfile.skywing
+
 
 #### Services
 - `Services` are defined in [`./docker/cookbook/docker-compose.yml`](https://github.com/mvancleaver/Skywing/blob/docker/docker/cookbook/docker-compose.yml) :
 
 | Service Name                    | Description                                   |
 |---                              |---                                            |
-| **`skywing`**                   | Base Skywing Build with TTY Access            |
-| **`tutorial_introduction`**     | Builds + Runs the Introduction Tutorial       |
-| **`tutorial_pubsub`**           | Builds + Runs the Pub-Sub Tutorial            |
-| **`tutorial_itr_method`**       | Builds + Runs the Iterative Methods Tutorial  |
+| **`Skywing`**                   | Base Skywing Build with TTY Access            |
 
 #### Building Services 
 - Services can be built using : `docker-compose build 'Service Name' `
@@ -47,3 +57,9 @@ Prepare the host by running one of the following commands :
 | **CUDA Arch**      | 12.0               |                     | 7.2                 |                       |
 | **Docker Engine**  | 20.10.22           |                     | 20.10.2             |                       |
 | **Docker Compose** | 1.29.2             |                     | 1.29.2              |                       |
+
+
+
+[Dockerfile.skywing]:https://github.com/mvancleaver/Skywing/blob/docker/docker/Dockerfile.skywing
+[Docker Engine]:https://docs.docker.com/engine/install/ubuntu/
+[Docker Compose]:https://docs.docker.com/compose/install/linux/#install-the-plugin-manually
