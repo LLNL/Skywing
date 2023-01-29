@@ -22,9 +22,9 @@ Basic build/run/lauch functionality is built around `docker-compose`
 #### Images
 A pre-built `Image` is available from the following :
 
-| Image Name                                | Dockerfile                  | Description           |
-|---                                        |---                          |---                    |
-| **`empyreanlattice/skywing:latest`**      | [Dockerfile.skywing]        | Base Skywing Build    |
+| Image Name                                | Dockerfile                  | Description                                 |
+|---                                        |---                          |---                                          |
+| **`empyreanlattice/skywing:latest`**      | [Dockerfile.skywing]        | Skywing Build with Examples / Tests    |
 
 ##### Building Custom Images
 Custom images can be built via making the appropriate changes to [Dockerfile.skywing] and running : 
