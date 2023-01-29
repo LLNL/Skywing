@@ -40,8 +40,11 @@ RUN pip3 install ninja==1.11.1
 
 # Cap'n Proto (https://capnproto.org/)
 RUN git clone -b v0.9.0 https://github.com/capnproto/capnproto.git /Libraries/capnproto
-RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y autoconf automake libtool 
-RUN cd /Libraries/capnproto/c++ && autoreconf -i && ./configure && make -j6 check && make install
+RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y autoconf automake libtool byobu
+RUN cd /Libraries/capnproto/c++ && autoreconf -i && ./configure && make -j6 && make install
+### Original Command
+## Removed 'check' from 'make -j6'. The check failed in Jetson Container due to IPV6 Error 
+# RUN cd /Libraries/capnproto/c++ && autoreconf -i && ./configure && make -j6 check && make install 
 
 ############################################################
 # - Skywing 
