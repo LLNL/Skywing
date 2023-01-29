@@ -5,47 +5,63 @@
 Clone the source repo and it's dependancies : 
     
     git clone --recurse-submodules --branch docker https://github.com/mvancleaver/Skywing.git
-
-#### Setup
-##### Manual 
-- Install [Docker Engine], [Docker Compose], and any dependanceies as outlined in the Docs
-
-##### Automatic (Trust, but verify)
-Use the Installer Script : [`./docker/init_host.sh`](https://github.com/mvancleaver/Skywing/blob/docker/docker/init_host.sh)
-
-**General Usage** : 
+    cd Skywing/
     
-    ./docker/init_host.sh
 
+### Setup
+#### Manual 
+- Install [Docker Engine], [Docker Compose], and any dependanceies as outlined in the Docs. This method is advised if you need to enable support for specialized devices/drivers ie. gpu / architecture / networks.
 
-- **GPU Enbabled** :[`./docker/init_host.sh -nvidia_driver`]
+#### x86 Simple Automatic  
+Use the Installer Script : [`./docker/init_host.sh`](https://github.com/mvancleaver/Skywing/blob/docker/docker/init_host.sh)
 
 
 ## Docker Usage
+Basic build/run/lauch functionality is built around `docker-compose`
 
 #### Images
-- `Images` are built using the `Dockerfile` below :
+A pre-built `Image` is available from the following :
 
 | Image Name                                | Dockerfile                  | Description           |
 |---                                        |---                          |---                    |
 | **`empyreanlattice/skywing:latest`**      | [Dockerfile.skywing]        | Base Skywing Build    |
 
+##### Building Custom Images
+Custom images can be built via making the appropriate changes to [Dockerfile.skywing] and running : 
+
+    docker-compose build skywing_dev
 
 
 #### Services
-- `Services` are defined in [`./docker/cookbook/docker-compose.yml`](https://github.com/mvancleaver/Skywing/blob/docker/docker/cookbook/docker-compose.yml) :
+`Services` are defined in [`./docker/cookbook/docker-compose.yml`](https://github.com/mvancleaver/Skywing/blob/docker/docker/cookbook/docker-compose.yml) :
 
-| Service Name                    | Description                                   |
-|---                              |---                                            |
-| **`Skywing`**                   | Base Skywing Build with TTY Access            |
+| Service Name                        | Description                                                     |
+|---                                  |---                                                              |
+| **`skywing_src`**                   | Base Skywing Env with TTY Access pulled from Dockerhub          |
+| **`skywing_dev`**                   | Base Skywing Env with TTY Access built from local Dockerfile    |
 
-#### Building Services 
-- Services can be built using : `docker-compose build 'Service Name' `
+#### Running Services
+Attach to a Skywing Container Shell : 
 
-#### Runtime
-- Services can be run using : `docker-compose up 'Service Name' `
+    docker-compose run skywing_src /bin/bash
 
-## Tested Configurations
+
+## End-to-End Installation 
+
+    # Clone the Source Repo and Submodules 
+    git clone --recurse-submodules --branch docker https://github.com/mvancleaver/Skywing.git
+
+    # Initize the Host System 
+    ./Skywing/docker/init_host.sh
+
+    # Attach to a Skywing Enviorment Container  
+    cd Skywing/docker/cookbook && docker-compose run skywing_src /bin/bash
+
+
+____________________________
+
+
+### Tested Configurations
 
 | -                  | x86 Desktop        | x86 Laptop          | Adlink Roscube AGX  | Jetson Orin Dev Kit   |
 |---                 |---                 |---                  |---                  |---                    |

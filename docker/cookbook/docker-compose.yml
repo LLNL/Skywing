@@ -5,9 +5,17 @@ services:
 ## Core Build
 ###########################
 
-  Skywing: # Working 
-    container_name: skywing_env
-    image: empyreanlattice/skywing
+  skywing_src: # Working 
+    container_name: skywing_src
+    image: empyreanlattice/skywing:latest
+    network_mode: host
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    command: /bin/bash
+
+  skywing_dev: # Working 
+    container_name: skywing_dev
     build:
       context: ../../
       dockerfile: ./docker/Dockerfile.skywing
@@ -16,4 +24,3 @@ services:
     stdin_open: true
     tty: true
     command: /bin/bash
-
