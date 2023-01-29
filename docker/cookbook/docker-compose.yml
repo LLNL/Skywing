@@ -5,8 +5,8 @@ services:
 ## Core
 ###########################
 
-  skywing:
-    container_name: skywing
+  skywing: # Working 
+    container_name: skywing_base
     image: empyreanlattice/skywing
     build:
       context: ../../
@@ -19,24 +19,21 @@ services:
 ## Tutorial Containers
 ###########################
 
-  tutorial_introduction:
+  tutorial_introduction: # Not Working 
     container_name: skywing_introduction
     image: empyreanlattice/skywing:latest
     network_mode: host
     # command:
 
-  tutorial_pubsub:
+  tutorial_pubsub: # Not Working 
     container_name: skywing_pubsub
     image: empyreanlattice/skywing:latest
     network_mode: host
     # command:
 
-  tutorial_itr_method:
+  tutorial_itr_method: # Not Working 
     container_name: skywing_itr_method
     image: empyreanlattice/skywing:latest
     network_mode: host
     # command:
 
-###########################
-## Example Containers
-###########################

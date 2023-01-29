@@ -4,8 +4,8 @@
 
 ### Setup Scripts
 Prepare the host by running one of the following commands :
-- **General Usage** : [`./docker/init_host.sh`](https://duckduckgo.com)
-- **GPU Enbabled** :[`./docker/init_host.sh -nvidia_driver`](https://duckduckgo.com)
+- **General Usage** : [`./docker/init_host.sh`](https://github.com/mvancleaver/Skywing/blob/docker/docker/init_host.sh)
+- **GPU Enbabled** :[`./docker/init_host.sh -nvidia_driver`](https://github.com/mvancleaver/Skywing/blob/docker/docker/init_host.sh)
 
 
 ## Docker Usage
@@ -13,12 +13,14 @@ Prepare the host by running one of the following commands :
 #### Images
 - `Images` are built using the `Dockerfile` below :
 
-| Image Name                      | Dockerfile                                    | Description                                   |
-|---                              |---                                            |---                                            |
-| **`empyreanlattice/skywing`**   | Dockerfile.skywing                            | Base Skywing Image                            |
+| Image Name                      | Dockerfile                  | Description                                   |
+|---                              |---                          |---                                            |
+| **`empyreanlattice/skywing`**   | [Dockerfile.skywing]        | Base Skywing Image                            |
+
+[Dockerfile.skywing]:https://github.com/mvancleaver/Skywing/blob/docker/docker/Dockerfile.skywing
 
 #### Services
-- `Services` defined in `./docker/cookbook/docker-compose.yml` :
+- `Services` defined in [`./docker/cookbook/docker-compose.yml`](https://github.com/mvancleaver/Skywing/blob/docker/docker/cookbook/docker-compose.yml) :
 
 | Service Name                    | Description                                   |
 |---                              |---                                            |
@@ -40,11 +42,15 @@ Prepare the host by running one of the following commands :
 | **OS**             | Ubuntu 18.04       | Ubuntu 20.04        | Ubuntu 18.04        | Ubuntu 20.04          |
 | **Kernel**         | 5.4.0-137-generic  |                     | 4.9.201-rqx580      |                       |
 | **CPU**            | Intel i9-9900K     | Intel i7-12800H     | ARM 8C Carmel       | ARM 12C Cortex-A78AE  |
-| **GPU**            | Nvidia RTX 2080 Ti | NVIDIA® RTX A4500   | Volta - 512C        | Ampere - 2048C        |
+| **GPU**            | NVIDIA RTX 2080 Ti | NVIDIA RTX A4500    | Volta - 512 Core    | Ampere - 2048 Core    |
 | **GPU Driver**     | 525.60.11          |                     | 10.2.89             |                       |
 | **CUDA Arch**      | 12.0               |                     | 7.2                 |                       |
 | **Docker Engine**  | 20.10.22           |                     | 20.10.2             |                       |
-| **Docker Compose** | 1.29.2             |                     |                     |                       |
+| **Docker Compose** | 1.29.2             |                     | 1.29.2              |                       |
+
+
+
+
 
 
 
