@@ -87,6 +87,71 @@ If you are running on LLNL's LC clusters, these instructions can help you get se
 Note that Skywing configurations that involve many connections between agents can run into a file descriptor limit.
 The soft limit can be increased by executing `ulimit -n <N>` where `<N>` must not exceed the hard limit (which can be determined by executing `ulimit -Hn`)
 
+## Guidance for Docker 
+
+### Host Installation 
+
+Clone the source repo and it's dependancies : 
+    
+    git clone --recurse-submodules --branch docker https://github.com/mvancleaver/Skywing.git
+    cd Skywing/
+    
+
+#### Setup
+##### Manual 
+* Install [Docker Engine], [Docker Compose], and any dependanceies as outlined in the Docs. This method is advised if you need to enable support for specialized devices/drivers ie. gpu / architecture / networks.
+
+[Docker Engine]:https://docs.docker.com/engine/install/ubuntu/
+[Docker Compose]:https://docs.docker.com/compose/install/linux/#install-the-plugin-manually
+
+##### x86 Simple Automatic  
+* Use the Installer Script : [`./docker/init_host.sh`](https://github.com/mvancleaver/Skywing/blob/docker/docker/init_host.sh)
+
+
+### Docker Usage
+Basic build/run/lauch functionality is built around `docker-compose`
+
+#### Images
+* A pre-built `Image` is available from the following :
+
+| Image Name                                                                                    | Dockerfile                  | Description                                 |
+|---                                                                                            |---                          |---                                          |
+| [**`empyreanlattice/skywing:latest`**](https://hub.docker.com/r/empyreanlattice/skywing)      | [Dockerfile.skywing]        | Skywing Build with Examples / Tests         |
+
+[Dockerfile.skywing]:https://github.com/mvancleaver/Skywing/blob/docker/docker/Dockerfile.skywing
+
+#### Services
+* `Services` are defined in [`./docker/cookbook/docker-compose.yml`](https://github.com/mvancleaver/Skywing/blob/docker/docker/cookbook/docker-compose.yml) :
+
+| Service Name                        | Description                                                     |
+|---                                  |---                                                              |
+| **`skywing_src`**                   | Base Skywing Env with TTY Access pulled from Dockerhub          |
+| **`skywing_dev`**                   | Base Skywing Env with TTY Access built from local Dockerfile    |
+
+##### Running Services
+* Attach to a Skywing Container Shell : 
+```
+    docker-compose run skywing_src /bin/bash
+```
+
+##### Building Custom Images
+* Custom images can be built via making the appropriate changes to [Dockerfile.skywing] and running : 
+```
+    docker-compose build skywing_dev 
+```
+
+### End-to-End Installation 
+
+    # Clone the Source Repo and Submodules 
+    git clone --recurse-submodules --branch docker https://github.com/mvancleaver/Skywing.git
+
+    # Initize the Host System 
+    ./Skywing/docker/init_host.sh
+
+    # Attach to a Skywing Enviorment Container  
+    cd Skywing/docker/cookbook && docker-compose run skywing_src /bin/bash
+
+
 # Contributing to Skywing
 
 Skywing is an open source project. We welcome contributions via pull
