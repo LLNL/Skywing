@@ -26,12 +26,6 @@ A pre-built `Image` is available from the following :
 |---                                        |---                          |---                                          |
 | **`empyreanlattice/skywing:latest`**      | [Dockerfile.skywing]        | Skywing Build with Examples / Tests    |
 
-##### Building Custom Images
-Custom images can be built via making the appropriate changes to [Dockerfile.skywing] and running : 
-
-    docker-compose build skywing_dev
-
-
 #### Services
 `Services` are defined in [`./docker/cookbook/docker-compose.yml`](https://github.com/mvancleaver/Skywing/blob/docker/docker/cookbook/docker-compose.yml) :
 
@@ -44,6 +38,11 @@ Custom images can be built via making the appropriate changes to [Dockerfile.sky
 Attach to a Skywing Container Shell : 
 
     docker-compose run skywing_src /bin/bash
+
+##### Building Custom Images
+Custom images can be built via making the appropriate changes to [Dockerfile.skywing] and running : 
+
+    docker-compose build skywing_dev 
 
 
 ## End-to-End Installation 
