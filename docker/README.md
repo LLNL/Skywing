@@ -1,6 +1,6 @@
 # Skywing Docker 
 
-## Host Installation 
+### Host Installation 
 
 Clone the source repo and it's dependancies : 
     
@@ -8,44 +8,50 @@ Clone the source repo and it's dependancies :
     cd Skywing/
     
 
-### Setup
-#### Manual 
-- Install [Docker Engine], [Docker Compose], and any dependanceies as outlined in the Docs. This method is advised if you need to enable support for specialized devices/drivers ie. gpu / architecture / networks.
+#### Setup
+##### Manual 
+* Install [Docker Engine], [Docker Compose], and any dependanceies as outlined in the Docs. This method is advised if you need to enable support for specialized devices/drivers ie. gpu / architecture / networks.
 
-#### x86 Simple Automatic  
-Use the Installer Script : [`./docker/init_host.sh`](https://github.com/mvancleaver/Skywing/blob/docker/docker/init_host.sh)
+[Docker Engine]:https://docs.docker.com/engine/install/ubuntu/
+[Docker Compose]:https://docs.docker.com/compose/install/linux/#install-the-plugin-manually
+
+##### x86 Simple Automatic  
+* Use the Installer Script : [`./docker/init_host.sh`](https://github.com/mvancleaver/Skywing/blob/docker/docker/init_host.sh)
 
 
-## Docker Usage
+### Docker Usage
 Basic build/run/lauch functionality is built around `docker-compose`
 
 #### Images
-A pre-built `Image` is available from the following :
+* A pre-built `Image` is available from the following :
 
-| Image Name                                | Dockerfile                  | Description                                 |
-|---                                        |---                          |---                                          |
-| **`empyreanlattice/skywing:latest`**      | [Dockerfile.skywing]        | Skywing Build with Examples / Tests    |
+| Image Name                                                                                    | Dockerfile                  | Description                                 |
+|---                                                                                            |---                          |---                                          |
+| [**`empyreanlattice/skywing:latest`**](https://hub.docker.com/r/empyreanlattice/skywing)      | [Dockerfile.skywing]        | Skywing Build with Examples / Tests         |
+
+[Dockerfile.skywing]:https://github.com/mvancleaver/Skywing/blob/docker/docker/Dockerfile.skywing
 
 #### Services
-`Services` are defined in [`./docker/cookbook/docker-compose.yml`](https://github.com/mvancleaver/Skywing/blob/docker/docker/cookbook/docker-compose.yml) :
+* `Services` are defined in [`./docker/cookbook/docker-compose.yml`](https://github.com/mvancleaver/Skywing/blob/docker/docker/cookbook/docker-compose.yml) :
 
 | Service Name                        | Description                                                     |
 |---                                  |---                                                              |
 | **`skywing_src`**                   | Base Skywing Env with TTY Access pulled from Dockerhub          |
 | **`skywing_dev`**                   | Base Skywing Env with TTY Access built from local Dockerfile    |
 
-#### Running Services
-Attach to a Skywing Container Shell : 
-
+##### Running Services
+* Attach to a Skywing Container Shell : 
+```
     docker-compose run skywing_src /bin/bash
+```
 
 ##### Building Custom Images
-Custom images can be built via making the appropriate changes to [Dockerfile.skywing] and running : 
-
+* Custom images can be built via making the appropriate changes to [Dockerfile.skywing] and running : 
+```
     docker-compose build skywing_dev 
+```
 
-
-## End-to-End Installation 
+### End-to-End Installation 
 
     # Clone the Source Repo and Submodules 
     git clone --recurse-submodules --branch docker https://github.com/mvancleaver/Skywing.git
@@ -55,7 +61,6 @@ Custom images can be built via making the appropriate changes to [Dockerfile.sky
 
     # Attach to a Skywing Enviorment Container  
     cd Skywing/docker/cookbook && docker-compose run skywing_src /bin/bash
-
 
 ____________________________
 
@@ -75,6 +80,3 @@ ____________________________
 
 
 
-[Dockerfile.skywing]:https://github.com/mvancleaver/Skywing/blob/docker/docker/Dockerfile.skywing
-[Docker Engine]:https://docs.docker.com/engine/install/ubuntu/
-[Docker Compose]:https://docs.docker.com/compose/install/linux/#install-the-plugin-manually
