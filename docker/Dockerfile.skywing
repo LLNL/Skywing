@@ -1,56 +1,53 @@
 # Skywing Build
 FROM ubuntu:20.04
 
-RUN apt update && apt install -y nano \
-                                 git \
-                                 python3 \
-                                 python3-pip
+############################################################
+# - Directories
+############################################################      
+
+RUN mkdir -p /Libraries/config         
+RUN mkdir -p /Libraries/Skywing/build                   
 
 ############################################################
 # - Depends - Need to Install / Manage 
 ############################################################
-RUN mkdir /Libraries 
+
+# general install 
+RUN apt update && apt install -y git nano wget curl apt-utils
+
+# python install
+RUN apt update && apt install -y  python3 python3-pip
 
 # c++ 8.3.0
-RUN apt update && apt install -y build-essential gcc
+RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y build-essential gcc-8 g++-8
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 8
+RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 8
 
 # meson (https://mesonbuild.com/)
 RUN git clone -b 1.0.0 https://github.com/mesonbuild/meson.git /Libraries/meson
-RUN apt update && apt install -y libgtk-3-dev
-RUN python3 /Libraries/meson/setup.py install 
+RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y libgtk-3-dev
+RUN cd /Libraries/meson && python3.8 setup.py install 
 
 # CMake (https://cmake.org/)
 RUN git clone -b v3.25.0 https://github.com/Kitware/CMake.git /Libraries/CMake
-RUN apt update && apt install -y libssl-dev
-RUN cd /Libraries/CMake && \
-    ./bootstrap && \
-    make && \
-    make install
+RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y libssl-dev
+RUN cd /Libraries/CMake && ./bootstrap && make && make install
 
 # ninja (https://ninja-build.org/)
-RUN git clone -b v1.11.0 https://github.com/ninja-build/ninja.git /Libraries/ninja
-RUN ./Libraries/ninja/configure.py --bootstrap
+#RUN git clone -b v1.9.0 https://github.com/ninja-build/ninja.git /Libraries/ninja
+#RUN cd /Libraries/ninja && python3 configure.py --bootstrap
+RUN pip3 install ninja==1.11.1
 
 # Cap'n Proto (https://capnproto.org/)
-RUN git clone -b v0.10.0 https://github.com/capnproto/capnproto.git /Libraries/capnproto
-RUN apt update && apt install -y autoconf automake libtool 
-RUN cd /Libraries/capnproto/c++ && \
-    autoreconf -i && \
-    ./configure && \
-    make -j6 check && \
-    make install
+RUN git clone -b v0.9.0 https://github.com/capnproto/capnproto.git /Libraries/capnproto
+RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y autoconf automake libtool 
+RUN cd /Libraries/capnproto/c++ && autoreconf -i && ./configure && make -j6 check && make install
 
 ############################################################
-# - Skywing Core 
+# - Skywing 
 ############################################################
 
-
-
-
-
-
-
-
-
-
+COPY ./ /Libraries/Skywing
+RUN cd /Libraries/Skywing && meson build -Dbuild_tests=true -Dbuild_examples=true
+RUN cd /Libraries/Skywing/build && ninja
 

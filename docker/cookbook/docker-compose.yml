@@ -1,0 +1,42 @@
+version: '3.5'
+services:
+
+###########################
+## Core
+###########################
+
+  skywing:
+    container_name: skywing
+    image: empyreanlattice/skywing
+    build:
+      context: ../../
+      dockerfile: ./docker/Dockerfile.skywing
+    network_mode: host
+    restart: unless-stopped
+    tty: true
+
+###########################
+## Tutorial Containers
+###########################
+
+  tutorial_introduction:
+    container_name: skywing_introduction
+    image: empyreanlattice/skywing:latest
+    network_mode: host
+    # command:
+
+  tutorial_pubsub:
+    container_name: skywing_pubsub
+    image: empyreanlattice/skywing:latest
+    network_mode: host
+    # command:
+
+  tutorial_itr_method:
+    container_name: skywing_itr_method
+    image: empyreanlattice/skywing:latest
+    network_mode: host
+    # command:
+
+###########################
+## Example Containers
+###########################
